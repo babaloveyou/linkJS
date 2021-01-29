@@ -19,6 +19,7 @@ func main () {
 	regs:=map[string]string {
 		"links"    : `(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]`,
 		"awskeys"  : `([^A-Z0-9]|^)(AKIA|A3T|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{12,}`,
+		"regex"    :`(?:"|')(((?:[a-zA-Z]{1,10}://|//)[^"'/]{1,}\.[a-zA-Z]{2,}[^"']{0,})|((?:/|\.\./|\./)[^"'><,;| *()(%%$^/\\\[\]][^"'><,;|()]{1,})|([a-zA-Z0-9_\-/]{1,}/[a-zA-Z0-9_\-/]{1,}\.(?:[a-zA-Z]{1,4}|action)(?:[\?|#][^"|']{0,}|))|([a-zA-Z0-9_\-/]{1,}/[a-zA-Z0-9_\-/]{3,}(?:[\?|#][^"|']{0,}|))|([a-zA-Z0-9_\-]{1,}\.(?:php|asp|aspx|jsp|json|action|html|js|txt|xml)(?:[\?|#][^"|']{0,}|)))(?:"|')`,
 		"domxss"   : `/((src|href|data|location|code|value|action)\s*["'\]]*\s*\+?\s*=)|((replace|assign|navigate|getResponseHeader|open(Dialog)?|showModalDialog|eval|evaluate|execCommand|execScript|setTimeout|setInterval)\s*["'\]]*\s*\()/`,
 	}
 
@@ -83,9 +84,9 @@ func search_with_regex(mode string, regs map[string]string) {
 		}
 
 		// Check to see if we are searching for apis
-                if mode == "apis" {
+                if mode == "regex" {
                         // Search for all links
-                        re:=regexp.MustCompile(regs["apis"])
+                        re:=regexp.MustCompile(regs["regex"])
                         match:=re.FindStringSubmatch(bodyString)
                         if match != nil {
                                 fmt.Printf("%s\n", match[0])
@@ -117,6 +118,17 @@ func search_with_regex(mode string, regs map[string]string) {
 
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
